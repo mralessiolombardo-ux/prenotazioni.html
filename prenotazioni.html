@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prenotazioni - Terrazza sul tetto Amber</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 15px;
+      background: #fafafa;
+    }
+    .booking-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      align-items: flex-end;
+      max-width: 800px;
+      margin: auto;
+    }
+    .booking-form div {
+      flex: 1;
+      min-width: 160px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 12px 20px;
+      background: #444;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #222;
+    }
+    /* Mobile: bottone sotto */
+    @media (max-width: 600px) {
+      .booking-form {
+        flex-wrap: nowrap;
+      }
+      .booking-form div {
+        flex: 1;
+      }
+      .booking-form .button-box {
+        flex: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="booking-form">
+    <div>
+      <label for="checkin">Check-in:</label>
+      <input type="date" id="checkin" name="checkin">
+    </div>
+    <div>
+      <label for="checkout">Check-out:</label>
+      <input type="date" id="checkout" name="checkout">
+    </div>
+    <div class="button-box">
+      <button onclick="redirectToAirbnb()">Verifica la disponibilità</button>
+    </div>
+  </div>
+
+  <script>
+    function formatDate(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    window.onload = function() {
+      const today = new Date();
+      const tomorrow = new Date(today);
+      const plusTwo = new Date(today);
+
+      tomorrow.setDate(today.getDate() + 1);   // check-in = domani
+      plusTwo.setDate(today.getDate() + 3);    // check-out = 2 notti dopo
+
+      document.getElementById('checkin').value = formatDate(tomorrow);
+      document.getElementById('checkout').value = formatDate(plusTwo);
+
+      document.getElementById('checkin').min = formatDate(tomorrow);
+      document.getElementById('checkout').min = formatDate(plusTwo);
+    };
+
+    function redirectToAirbnb() {
+      const checkin = document.getElementById('checkin').value;
+      const checkout = document.getElementById('checkout').value;
+      if (!checkin || !checkout) {
+        alert("Seleziona le date");
+        return;
+      }
+      const airbnbUrl = `https://www.airbnb.it/rooms/1463947886106059234?check_in=${checkin}&check_out=${checkout}`;
+      window.open(airbnbUrl, "_blank");
+    }
+  </script>
+</body>
+</html>
